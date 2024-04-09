@@ -1,21 +1,78 @@
 from sklearn import datasets
 import matplotlib.pyplot as plt
+import numpy as np
 
-# Importing iris dataset
-iris = datasets.load_iris()
 
-# Divide into classes
-setosa = iris.data[:50]
-setosa_training = setosa[:30]
-setosa_testing = setosa[30:]
+C = 3 # number of classes
+D = 4 # number of features
 
-versicolor = iris.data[50:100]
-versicolor_training = versicolor[:30]
-versicolor_testing = versicolor[30:]
 
-virginica = iris.data[100:]
-virginica_training = virginica[:30]
-virginica_testing = virginica[30:]
+iris = datasets.load_iris() # dataset, features in iris.data
+
+
+# Define training and test data
+setosa_training = iris.data[:30]
+setosa_test = iris.data[30:50]
+
+versicolor_training = iris.data[50:80]
+versicolor_test = iris.data[80:100]
+
+virginica_training = iris.data[100:130]
+virginica_test = iris.data[130:150]
+
+training_features = np.concatenate((setosa_training, versicolor_training, virginica_training))
+
+
+# Define labels for training
+total_samples = len(training_features)
+samples_per_class = total_samples // C
+
+labels_training = []
+
+labels_training.extend([[1, 0, 0]] * samples_per_class)
+labels_training.extend([[0, 1, 0]] * samples_per_class)
+labels_training.extend([[0, 0, 1]] * samples_per_class)
+
+labels = np.array(labels_training)
+
+
+
+# Initialize weights and bias
+W = np.random.randn(C, D)  # weights
+w_o = np.random.randn()  # bias
+
+
+# Function for MSE
+def mse_loss(y_true, y_pred):
+    return np.mean((y_true - y_pred)**2)
+
+
+# Function for computing the gradients
+def compute_gradient(X, y, y_pred):
+    # Compute gradients
+    grad_W = -2 * np.dot(X.T, (y - y_pred)) / len(y)
+    grad_wo = -2 * np.mean(y - y_pred)
+    return grad_W, grad_wo
+
+
+# Training parameters
+learning_rate = 0.01
+epochs = 1000
+
+
+# Training
+for epoch in range(epochs):
+    g = np.dot(training_features, W.T) + w_o # compute predictor
+    loss = mse_loss(labels_training, g) # compute loss for present predictor
+    grad_W, grad_wo = compute_gradient(training_features, labels_training, g) # compute the gradients
+    
+    # Update weights and bias using gradient descent
+    W -= learning_rate * grad_W.T
+    w_o -= learning_rate * grad_wo
+    
+    # Print loss every few epochs
+    if epoch % 100 == 0:
+        print(f"Epoch {epoch}: MSE Loss = {loss}")
 
 
 
