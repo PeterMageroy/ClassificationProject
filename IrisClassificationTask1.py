@@ -8,10 +8,6 @@ from pandas import DataFrame
 iris = datasets.load_iris() # dataset, features can be found in iris.data
 
 
-C = 3 # number of classes
-D = 4 # number of features
-
-
 # Sigmoid function
 def sigmoid(x):
     return (1/(1+np.exp(-x)))
@@ -29,7 +25,7 @@ def compute_gradient(X, y, y_pred):
     return grad_W, grad_wo
  
 
-def dataset_split(train_num, test_num, invert_order=False):
+def dataset_split(train_num, test_num, invert_order=False, C=3):
     """
     Arranging training and test data from the iris dataset.
 
@@ -90,7 +86,7 @@ def dataset_split(train_num, test_num, invert_order=False):
     return training_features, labels_training, test_features, labels_test
 
 
-def train(training_features, labels_training, learning_rate=0.01, epochs=1000):
+def train(training_features, labels_training, learning_rate=0.01, epochs=1000, C=3, D=4):
     """
     Training to adjust the weights and bias of the linear classifier.
 

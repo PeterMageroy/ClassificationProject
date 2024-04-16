@@ -8,10 +8,6 @@ from pandas import DataFrame
 iris = datasets.load_iris() # dataset, features can be found in iris.data
 
 
-C = 3 # number of classes
-D = 4 # number of features
-
-
 # Sigmoid function
 def sigmoid(x):
     return (1/(1+np.exp(-x)))
@@ -29,7 +25,7 @@ def compute_gradient(X, y, y_pred):
     return grad_W, grad_wo
  
 
-def dataset_split(train_num, test_num, invert_order=False):
+def dataset_split(train_num, test_num, invert_order=False, C=3):
     """
     Arranging training and test data from the iris dataset.
 
@@ -90,7 +86,7 @@ def dataset_split(train_num, test_num, invert_order=False):
     return training_features, labels_training, test_features, labels_test
 
 
-def train(training_features, labels_training, learning_rate=0.01, epochs=1000):
+def train(training_features, labels_training, learning_rate=0.01, epochs=1000, C=3, D=4):
     """
     Training to adjust the weights and bias of the linear classifier.
 
@@ -192,4 +188,28 @@ ax3.set_title("Petal width [cm]")
 fig.suptitle("Features across different classes")
 plt.legend()
 plt.tight_layout()
-plt.show()
+#plt.show()
+
+
+# Remove sepal width from iris dataset as this feature showed the most overlap
+iris.data = np.delete(iris.data, 1, 1)
+
+# Split data into features and labels for training and test
+training_features, labels_training, test_features, labels_test = dataset_split(30, 20)
+
+# Perform training
+W, w_o = train(training_features, labels_training, D=3)
+
+# Perform test on test data
+error_test, confusion_test = test(test_features, labels_test, W, w_o)
+print("Error rate test set:\t", error_test, "%")
+print("Confusion matrix for test set: (True \\ Predicted)")
+print(confusion_test)
+print()
+
+# Perform test on training data
+error_train, confusion_train = test(training_features, labels_training, W, w_o)
+print("Error rate training set:\t", error_train, "%")
+print("Confusion matrix for training set: (True \\ Predicted)")
+print(confusion_train)
+print()
