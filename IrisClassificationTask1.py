@@ -47,6 +47,11 @@ def dataset_split(train_num, test_num, invert_order=False):
     versicolor_data = iris.data[50:100]
     virginica_data = iris.data[100:150]
 
+    if invert_order:
+        setosa_data = np.flip(setosa_data)
+        versicolor_data = np.flip(versicolor_data)
+        virginica_data = np.flip(virginica_data)
+
     if train_num + test_num > 50:
         print("Error: Too many test and training points requested.")
 
@@ -159,6 +164,10 @@ def test(test_features, labels_test, W, w_o):
     return error_rate, confusion_matrix
 
 
+
+
+############## Task 1 a ##############
+
 # Split data into features and labels for training and test
 training_features, labels_training, test_features, labels_test = dataset_split(30, 20)
 
@@ -179,6 +188,30 @@ print("Confusion matrix for training set: (True \\ Predicted)")
 print(confusion_train)
 print()
 
+
+
+
+############## Task 1 d ##############
+
+# Split data into features and labels for training and test
+training_features, labels_training, test_features, labels_test = dataset_split(30, 20, invert_order=True)
+
+# Perform training
+W, w_o = train(training_features, labels_training)
+
+# Perform test on test data
+error_test, confusion_test = test(test_features, labels_test, W, w_o)
+print("Error rate test set:\t", error_test, "%")
+print("Confusion matrix for test set: (True \\ Predicted)")
+print(confusion_test)
+print()
+
+# Perform test on training data
+error_train, confusion_train = test(training_features, labels_training, W, w_o)
+print("Error rate training set:\t", error_train, "%")
+print("Confusion matrix for training set: (True \\ Predicted)")
+print(confusion_train)
+print()
 
 
 # Print the confusion matrices
