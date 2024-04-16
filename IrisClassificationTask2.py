@@ -44,12 +44,12 @@ def dataset_split(train_num, test_num, invert_order=False):
 
     # Define training and test features
     setosa_data = iris.data[0:50]
-    versicolor_data = iris.data[50:100]
+    versicolour_data = iris.data[50:100]
     virginica_data = iris.data[100:150]
 
     if invert_order:
         setosa_data = np.flip(setosa_data)
-        versicolor_data = np.flip(versicolor_data)
+        versicolour_data = np.flip(versicolour_data)
         virginica_data = np.flip(virginica_data)
 
     if train_num + test_num > 50:
@@ -58,14 +58,14 @@ def dataset_split(train_num, test_num, invert_order=False):
     setosa_training = setosa_data[:train_num]
     setosa_test = setosa_data[train_num:train_num+test_num]
 
-    versicolor_training = versicolor_data[:train_num]
-    versicolor_test = versicolor_data[train_num:train_num+test_num]
+    versicolour_training = versicolour_data[:train_num]
+    versicolour_test = versicolour_data[train_num:train_num+test_num]
 
     virginica_training = virginica_data[:train_num]
     virginica_test = virginica_data[train_num:train_num+test_num]
 
-    training_features = np.concatenate((setosa_training, versicolor_training, virginica_training))
-    test_features = np.concatenate((setosa_test, versicolor_test, virginica_test))
+    training_features = np.concatenate((setosa_training, versicolour_training, virginica_training))
+    test_features = np.concatenate((setosa_test, versicolour_test, virginica_test))
 
 
     # Define training and test labels
@@ -165,3 +165,31 @@ def test(test_features, labels_test, W, w_o):
 
 
 ############## Task 2 a ##############
+
+# Plotting histograms
+fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(nrows=2, ncols=2, figsize=(10, 8))
+
+ax0.hist(iris.data[:50][:,0], density=True, histtype='bar', fill=True, color='red', alpha=0.5, label="Setosa")
+ax0.hist(iris.data[50:100][:,0], density=True, histtype='bar', fill=True, color='blue', alpha=0.5, label="Versicolour")
+ax0.hist(iris.data[100:150][:,0], density=True, histtype='bar', fill=True, color='green', alpha=0.5, label="Virginica")
+ax0.set_title("Sepal length [cm]")
+
+ax1.hist(iris.data[:50][:,1], density=True, histtype='bar', fill=True, color='red', alpha=0.5, label="Setosa")
+ax1.hist(iris.data[50:100][:,1], density=True, histtype='bar', fill=True, color='blue', alpha=0.5, label="Versicolour")
+ax1.hist(iris.data[100:150][:,1], density=True, histtype='bar', fill=True, color='green', alpha=0.5, label="Virginica")
+ax1.set_title("Sepal width [cm]")
+
+ax2.hist(iris.data[:50][:,2], density=True, histtype='bar', fill=True, color='red', alpha=0.5, label="Setosa")
+ax2.hist(iris.data[50:100][:,2],  density=True, histtype='bar', fill=True, color='blue', alpha=0.5, label="Versicolour")
+ax2.hist(iris.data[100:150][:,2], density=True, histtype='bar', fill=True, color='green', alpha=0.5, label="Virginica")
+ax2.set_title("Petal length [cm]")
+
+ax3.hist(iris.data[:50][:,3], density=True, histtype='bar', fill=True, color='red', alpha=0.5, label="Setosa")
+ax3.hist(iris.data[50:100][:,3], density=True, histtype='bar', fill=True, color='blue', alpha=0.5, label="Versicolour")
+ax3.hist(iris.data[100:150][:,3], density=True, histtype='bar', fill=True, color='green', alpha=0.5, label="Virginica")
+ax3.set_title("Petal width [cm]")
+
+fig.suptitle("Features across different classes")
+plt.legend()
+plt.tight_layout()
+plt.show()

@@ -44,12 +44,12 @@ def dataset_split(train_num, test_num, invert_order=False):
 
     # Define training and test features
     setosa_data = iris.data[0:50]
-    versicolor_data = iris.data[50:100]
+    versicolour_data = iris.data[50:100]
     virginica_data = iris.data[100:150]
 
     if invert_order:
         setosa_data = np.flip(setosa_data)
-        versicolor_data = np.flip(versicolor_data)
+        versicolour_data = np.flip(versicolour_data)
         virginica_data = np.flip(virginica_data)
 
     if train_num + test_num > 50:
@@ -58,14 +58,14 @@ def dataset_split(train_num, test_num, invert_order=False):
     setosa_training = setosa_data[:train_num]
     setosa_test = setosa_data[train_num:train_num+test_num]
 
-    versicolor_training = versicolor_data[:train_num]
-    versicolor_test = versicolor_data[train_num:train_num+test_num]
+    versicolour_training = versicolour_data[:train_num]
+    versicolour_test = versicolour_data[train_num:train_num+test_num]
 
     virginica_training = virginica_data[:train_num]
     virginica_test = virginica_data[train_num:train_num+test_num]
 
-    training_features = np.concatenate((setosa_training, versicolor_training, virginica_training))
-    test_features = np.concatenate((setosa_test, versicolor_test, virginica_test))
+    training_features = np.concatenate((setosa_training, versicolour_training, virginica_training))
+    test_features = np.concatenate((setosa_test, versicolour_test, virginica_test))
 
 
     # Define training and test labels
@@ -216,10 +216,10 @@ print()
 
 # Print the confusion matrices
 """
-df_cm = DataFrame(confusion_train, index=["setosa","versicolor","virginica"], columns=["setosa","versicolor","virginica"])
+df_cm = DataFrame(confusion_train, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
 pretty_plot_confusion_matrix(df_cm,title='Training set',cmap="RdYlGn",pred_val_axis='x')
 
-df_cm = DataFrame(confusion_test, index=["setosa","versicolor","virginica"], columns=["setosa","versicolor","virginica"])
+df_cm = DataFrame(confusion_test, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
 pretty_plot_confusion_matrix(df_cm,title='Test set',cmap="RdYlGn",pred_val_axis='x')
 """
 
