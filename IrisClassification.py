@@ -95,7 +95,7 @@ def train(training_features, labels_training, learning_rate=0.01, epochs=1000):
         learning_rate:          coefficient for the gradient descent
         epochs:                 number of iterations
 
-    Returns:    weights W, bias w_o
+    Returns:    W, w_o
     """
 
     # Initialize random weights and bias
@@ -119,6 +119,45 @@ def train(training_features, labels_training, learning_rate=0.01, epochs=1000):
     return W, w_o
 
 
+def test(test_features, labels_test, W, w_o):
+    """
+    Performs a test on the given test data and returns evaluation measures.
+    
+    Parameters:
+        test_features:      test data
+        labels_test:        labels used to evaluate performance
+        W:                  weights given from training
+        w_o:                bias given from training
+        
+    Returns:    error_rate, confusion_matrix
+    """
+
+    total_classifications = len(test_features)
+    total_correct = 0
+    total_false = 0
+    confusion_matrix = [[0 for i in range(3)] for j in range(3)]
+
+    # Iterate through the tests
+    for i in range(len(test_features)):
+        g = sigmoid(np.dot(test_features[i], W.T) + w_o)
+
+        # Count correct and false classifications
+        if np.argmax(labels_test[i]) == np.argmax(g):
+            total_correct += 1
+        else:
+            total_false += 1
+        
+        confusion_matrix[np.argmax(labels_test[i])][np.argmax(g)] += 1 # add a count to the correct location in confusion matrix
+
+    # In case we count wrong
+    if total_correct + total_false != total_classifications:
+        print("Error! Number of total classifications incorrect.")
+
+    error_rate = np.round(total_false / total_classifications, 2) * 100 # error rate in percentage
+    confusion_matrix = np.round(np.array(confusion_matrix) / len(test_features), 2) * 100 # confusion matrix in percentage
+
+    return error_rate, confusion_matrix
+
 
 # Split data into features and labels for training and test
 training_features, labels_training, test_features, labels_test = dataset_split(30, 20)
@@ -126,71 +165,20 @@ training_features, labels_training, test_features, labels_test = dataset_split(3
 # Perform training
 W, w_o = train(training_features, labels_training)
 
-
-######## Testing on test data ########
-total_classifications = len(test_features)
-total_correct = 0
-total_false = 0
-
-confusion_test = [[0 for i in range(3)] for j in range(3)] # confusion matrix
-
-# Iterate through the tests
-for i in range(len(test_features)):
-    g = np.dot(test_features[i], W.T) + w_o
-    #print("True class:\t", labels_test[i], "\tClassification:\t", np.argmax(g))
-
-    # Count correct and false classifications
-    if np.argmax(labels_test[i]) == np.argmax(g):
-        total_correct += 1
-    else:
-        total_false += 1
-    
-    confusion_test[np.argmax(labels_test[i])][np.argmax(g)] += 1
-
-confusion_test = np.round(np.array(confusion_test) / len(test_features), 2) * 100 # formatting guesses in percentage
-
-# In case we count wrong
-if total_correct + total_false != total_classifications:
-    print("Error! Number of total classifications incorrect.")
-
-#print("Correct classifications: ", np.round(total_correct/total_classifications, 2), "%\tFalse classifications: ", np.round(total_false/total_classifications, 2), "%")
-print("Error rate test set:\t", np.round(total_false / total_classifications, 2) * 100, "%")
+# Perform test on test data
+error_test, confusion_test = test(test_features, labels_test, W, w_o)
+print("Error rate test set:\t", error_test, "%")
 print("Confusion matrix for test set: (True \\ Predicted)")
 print(confusion_test)
 print()
 
-
-###### Testing on training data ######
-total_classifications = len(training_features)
-total_correct = 0
-total_false = 0
-
-confusion_train = [[0 for i in range(3)] for j in range(3)] # confusion matrix
-
-# Iterate through the tests
-for i in range(len(training_features)):
-    g = np.dot(training_features[i], W.T) + w_o
-    #print("True class:\t", labels_test[i], "\tClassification:\t", np.argmax(g))
-
-    # Count correct and false classifications
-    if np.argmax(labels_training[i]) == np.argmax(g):
-        total_correct += 1
-    else:
-        total_false += 1
-
-    confusion_train[np.argmax(labels_training[i])][np.argmax(g)] += 1
-
-confusion_train = np.round(np.array(confusion_train) / len(training_features), 2) * 100 # formatting guesses in percentage
-
-# In case we count wrong
-if total_correct + total_false != total_classifications:
-    print("Error! Number of total classifications incorrect.")
-
-#print("Correct classifications: ", np.round(total_correct/total_classifications, 2), "%\tFalse classifications: ", np.round(total_false/total_classifications, 2), "%")
-print("Error rate training set:\t", np.round(total_false / total_classifications, 2) * 100, "%")
+# Perform test on training data
+error_train, confusion_train = test(training_features, labels_training, W, w_o)
+print("Error rate training set:\t", error_train, "%")
 print("Confusion matrix for training set: (True \\ Predicted)")
 print(confusion_train)
 print()
+
 
 
 # Print the confusion matrices
