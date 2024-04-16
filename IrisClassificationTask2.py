@@ -86,7 +86,7 @@ def dataset_split(train_num, test_num, invert_order=False, C=3):
     return training_features, labels_training, test_features, labels_test
 
 
-def train(training_features, labels_training, learning_rate=0.01, epochs=1000, C=3, D=4):
+def train(training_features, labels_training, learning_rate=0.005, epochs=10000, C=3, D=4):
     """
     Training to adjust the weights and bias of the linear classifier.
 
@@ -115,7 +115,8 @@ def train(training_features, labels_training, learning_rate=0.01, epochs=1000, C
         
         # Print loss every few epochs
         if epoch % 100 == 0:
-            print(f"Epoch {epoch}: MSE Loss = {loss}")
+            pass
+            #print(f"Epoch {epoch}: MSE Loss = {loss}")
     
     return W, w_o
 
@@ -160,6 +161,7 @@ def test(test_features, labels_test, W, w_o):
     return error_rate, confusion_matrix
 
 
+
 ############## Task 2 a ##############
 
 # Plotting histograms
@@ -188,17 +190,17 @@ ax3.set_title("Petal width [cm]")
 fig.suptitle("Features across different classes")
 plt.legend()
 plt.tight_layout()
-#plt.show()
+plt.show()
 
 
-# Remove sepal width from iris dataset as this feature showed the most overlap
-iris.data = np.delete(iris.data, 1, 1)
 
 # Split data into features and labels for training and test
 training_features, labels_training, test_features, labels_test = dataset_split(30, 20)
 
 # Perform training
-W, w_o = train(training_features, labels_training, D=3)
+W, w_o = train(training_features, labels_training, D=4)
+
+print("All features:")
 
 # Perform test on test data
 error_test, confusion_test = test(test_features, labels_test, W, w_o)
@@ -207,9 +209,55 @@ print("Confusion matrix for test set: (True \\ Predicted)")
 print(confusion_test)
 print()
 
-# Perform test on training data
-error_train, confusion_train = test(training_features, labels_training, W, w_o)
-print("Error rate training set:\t", error_train, "%")
-print("Confusion matrix for training set: (True \\ Predicted)")
-print(confusion_train)
+
+
+# Remove sepal width feature from features
+training_features, test_features = np.delete(training_features, 1, 1), np.delete(test_features, 1, 1)
+
+# Perform training
+W, w_o = train(training_features, labels_training, D=3)
+
+print("Three features:")
+
+# Perform test on test data
+error_test, confusion_test = test(test_features, labels_test, W, w_o)
+print("Error rate test set:\t", error_test, "%")
+print("Confusion matrix for test set: (True \\ Predicted)")
+print(confusion_test)
+print()
+
+
+
+############## Task 2 b ##############
+
+# Remove sepal length from features
+training_features, test_features = np.delete(training_features, 0, 1), np.delete(test_features, 0, 1)
+
+# Perform training
+W, w_o = train(training_features, labels_training, D=2)
+
+print("Two features:")
+
+# Perform test on test data
+error_test, confusion_test = test(test_features, labels_test, W, w_o)
+print("Error rate test set:\t", error_test, "%")
+print("Confusion matrix for test set: (True \\ Predicted)")
+print(confusion_test)
+print()
+
+
+
+# Remove petal length from features
+training_features, test_features = np.delete(training_features, 1, 1), np.delete(test_features, 1, 1)
+
+# Perform training
+W, w_o = train(training_features, labels_training, D=1)
+
+print("One feature:")
+
+# Perform test on test data
+error_test, confusion_test = test(test_features, labels_test, W, w_o)
+print("Error rate test set:\t", error_test, "%")
+print("Confusion matrix for test set: (True \\ Predicted)")
+print(confusion_test)
 print()
