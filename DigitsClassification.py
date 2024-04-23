@@ -80,7 +80,7 @@ test_num = 1000
 
 def test(train_data, train_labels, test_data, test_labels, test_num=1000):
     # To find error rate and confusion matrix
-    total_classifications = 0
+    total_classifications = test_num
     total_correct = 0
     total_false = 0
 
