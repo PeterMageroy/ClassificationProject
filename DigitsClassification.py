@@ -5,6 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import time
+from ConfusionMatrixPrinter import _test_cm, pretty_plot_confusion_matrix
+from pandas import DataFrame
 
 
 # Reference to find execution time of the program
@@ -141,3 +143,8 @@ for i in range(20):
     #plt.show()
     plt.savefig("FalseClassifiedImages/Falseclassification{}.png".format(i))
     plt.clf()
+
+
+# Print the confusion matrix
+df_cm = DataFrame(confusion_matrix, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+pretty_plot_confusion_matrix(df_cm,title='Confusion matrix',cmap="RdYlGn",pred_val_axis='x')
