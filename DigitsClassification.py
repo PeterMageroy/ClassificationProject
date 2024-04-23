@@ -30,7 +30,7 @@ def fetch_data(test_size=10000, standardize=True):
 
 
 def distance(img1, img2):
-    return np.sqrt(np.sum(img2 - img1)**2)
+    return np.sqrt(np.sum((img2 - img1)**2))
 
 
 def nearest_neighbor(img1, dataset):
@@ -43,6 +43,7 @@ def nearest_neighbor(img1, dataset):
     
     Returns:    nn_index
     """
+
     min_distance = np.inf
     nn_index = 0
 
@@ -62,7 +63,6 @@ def nearest_neighbor(img1, dataset):
 
 # Load MNIST dataset
 train_data, train_labels, test_data, test_labels = fetch_data()
-
 
 
 
@@ -95,7 +95,7 @@ def test(train_data, train_labels, test_data, test_labels, test_num=1000):
     for i in range(test_num):
         prediction = int(train_labels[nearest_neighbor(test_data[i], train_data)])
         
-        if prediction == test_labels[i]:
+        if prediction == int(test_labels[i]):
             total_correct += 1
         else:
             total_false += 1
@@ -103,10 +103,18 @@ def test(train_data, train_labels, test_data, test_labels, test_num=1000):
 
         confusion_matrix[int(test_labels[i])][prediction] += 1 # add a count to the correct location in confusion matrix
 
+        # Progress
+        p = total_classifications / 10
+        if (i+1) % p == 0:
+            print("{} %".format((i+1)*100/test_num))
+
 
     # In case we count wrong
     if total_correct + total_false != total_classifications:
         print("Error! Number of total classifications incorrect.")
+    
+    print("Total false:\t", total_false)
+    print("Total correct:\t", total_correct)
 
     error_rate = np.round(total_false / total_classifications, 2) * 100 # error rate in percentage
     confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 2) * 100 # confusion matrix in percentage
@@ -119,15 +127,16 @@ error_rate, confusion_matrix, indexes_false_classified = test(train_data, train_
 print("Error rate test set:\t", error_rate, "%")
 print("Confusion matrix for test set: (True \\ Predicted)")
 print(confusion_matrix)
-print("--- %s seconds ---" % (time.time() - start_time))
 print()
+print("--- %s seconds ---" % (time.time() - start_time))
 
 
 # Plotting some of the falsely classified images
-for i in range(5):
-    img = test_data[indexes_false_classified[i, 0]].reshape(28, 28)
+for i in range(10):
+    img = test_data[indexes_false_classified[i][0]].reshape(28, 28)
 
     plt.imshow(img, cmap='hot')
-    plt.title("True: %s       Prediction: %s" % (test_labels[indexes_false_classified[i, 0]], indexes_false_classified[i, 1]))
+    plt.title("True: %s       Prediction: %s" % (test_labels[indexes_false_classified[i][0]], indexes_false_classified[i][1]))
     plt.colorbar()
-    plt.show()
+    #plt.show()
+    plt.savefig("FalseClassifiedImages/Falseclassification{}.png".format(i))
