@@ -132,7 +132,7 @@ print("--- %s seconds ---" % (time.time() - start_time))
 
 
 # Plotting some of the falsely classified images
-for i in range(10):
+for i in range(20):
     img = test_data[indexes_false_classified[i][0]].reshape(28, 28)
 
     plt.imshow(img, cmap='hot')
@@ -140,3 +140,4 @@ for i in range(10):
     plt.colorbar()
     #plt.show()
     plt.savefig("FalseClassifiedImages/Falseclassification{}.png".format(i))
+    plt.clf()
