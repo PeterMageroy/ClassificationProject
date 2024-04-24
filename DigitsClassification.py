@@ -86,8 +86,11 @@ def test(train_data, train_labels, test_data, test_labels, test_num=1000):
     total_correct = 0
     total_false = 0
 
-    # We want to know what indexes of the test set we were unable to classify correctly, each element as [index of true, predicted value]
+    # What indexes of the test set were we unable to classify correctly, each element as [index of true, predicted value]
     indexes_false_classified = []
+
+    # What indexes of the test set were we able to classify correctly, each element as [index of label]
+    indexes_correct_classified = []
 
     # Confusion matrix is a 10 x 10 matrix
     confusion_matrix = [[0 for i in range(10)] for j in range(10)]
@@ -99,6 +102,7 @@ def test(train_data, train_labels, test_data, test_labels, test_num=1000):
         
         if prediction == int(test_labels[i]):
             total_correct += 1
+            indexes_correct_classified.append(i)
         else:
             total_false += 1
             indexes_false_classified.append([i, prediction])
@@ -121,11 +125,11 @@ def test(train_data, train_labels, test_data, test_labels, test_num=1000):
     error_rate = np.round(total_false / total_classifications, 2) * 100 # error rate in percentage
     confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 2) * 100 # confusion matrix in percentage
 
-    return error_rate, confusion_matrix, indexes_false_classified
+    return error_rate, confusion_matrix, indexes_false_classified, indexes_correct_classified
 
 
 # Results from testing on a chunk of the data
-error_rate, confusion_matrix, indexes_false_classified = test(train_data, train_labels, test_data, test_labels, test_num)
+error_rate, confusion_matrix, indexes_false_classified, indexes_correct_classified = test(train_data, train_labels, test_data, test_labels, test_num)
 print("Error rate test set:\t", error_rate, "%")
 print("Confusion matrix for test set: (True \\ Predicted)")
 print(confusion_matrix)
@@ -142,6 +146,18 @@ for i in range(20):
     plt.colorbar()
     #plt.show()
     plt.savefig("FalseClassifiedImages/Falseclassification{}.png".format(i))
+    plt.clf()
+
+
+# Plotting som of the correctly classified images
+for i in range(20):
+    img = test_data[indexes_correct_classified[i]].reshape(28, 28)
+
+    plt.imshow(img, cmap='hot')
+    plt.title("Correct prediction: %s" % (test_labels[indexes_correct_classified[i]]))
+    plt.colorbar()
+    #plt.show()
+    plt.savefig("CorrectClassifiedImages/Correctclassification{}.png".format(i))
     plt.clf()
 
 
