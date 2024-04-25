@@ -70,7 +70,7 @@ train_data, train_labels, test_data, test_labels = fetch_data()
 
 
 
-########## Task 1 a) ##########
+########## Task 1 a-c ##########
 """
 Use the nearest neighbor predictor to classify the first 1000 data points in 
 the test data. Find the confusion matrix and error rate.
