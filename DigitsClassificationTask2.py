@@ -97,7 +97,7 @@ def weighted_most_common(classes, min_distances):
         weight_sum = 0
 
         for j in range(counter[i][1]):
-            weight_sum += w[j]
+            weight_sum += (1 / w[j])
 
         weight_list.append(weight_sum)
     
@@ -140,7 +140,7 @@ def k_nearest_neighbor_cluster(img1, clusters, k=1):
 
     # Voting among the neighbors
     classes = [neighbors[i][0] for i in range(k)]
-    prediction = weighted_most_common(classes, min_distances)
+    prediction = weighted_most_common(classes, min_distances) # Counter(classes).most_common(1)[0][0]
     
     return prediction
 
@@ -237,22 +237,17 @@ def test(clustered_data, test_data, test_labels, test_num=1000, k=1):
     return error_rate, confusion_matrix, indexes_false_classified, indexes_correct_classified
 
 
-
-
 # Load MNIST dataset
 train_data, train_labels, test_data, test_labels = fetch_data()
+
+# Normalization of data
+train_data, test_data = train_data / 255, test_data / 255
 
 M = 64 # clusters
 test_num = 1000 # chunk of test data
 
 # Create clusters for the training data
 clustered_data = create_clusters(train_data, train_labels, M)
-
-
-
-prediction = k_nearest_neighbor_cluster(test_data[0], clustered_data, k=7)
-print(prediction)
-
 
 
 ############# Task 2 a-b ##############
@@ -307,4 +302,4 @@ plt.stem(x, error_rates)
 plt.xlabel("Number of nearest neighbors k")
 plt.ylabel("Error rate [%]")
 plt.grid()
-plt.savefig("error_rates_with_weighting.png")
+plt.savefig("error_rates_with_weighting_and_normalization.png")
