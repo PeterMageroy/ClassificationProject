@@ -82,10 +82,6 @@ def weighted_most_common(classes, min_distances):
     weights = []
     counter = Counter(classes).most_common()
 
-    # Must use arrays
-    classes = np.array(classes)
-    min_distances = np.array(min_distances)
-
     for i in range(k):
         weights.append(min_distances[i] / sum_distances)
     
@@ -95,6 +91,8 @@ def weighted_most_common(classes, min_distances):
         mask = (classes == counter[i][0])
         w = min_distances[mask]
         weight_sum = 0
+
+        print(counter)
 
         for j in range(counter[i][1]):
             weight_sum += w[j]
@@ -248,12 +246,7 @@ test_num = 1000 # chunk of test data
 # Create clusters for the training data
 clustered_data = create_clusters(train_data, train_labels, M)
 
-
-
 prediction = k_nearest_neighbor_cluster(test_data[0], clustered_data, k=7)
-print(prediction)
-
-
 
 ############# Task 2 a-b ##############
 """
