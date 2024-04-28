@@ -86,7 +86,7 @@ def dataset_split(train_num, test_num, invert_order=False, C=3):
     return training_features, labels_training, test_features, labels_test
 
 
-def train(training_features, labels_training, learning_rate=0.005, epochs=10000, C=3, D=4):
+def train(training_features, labels_training, learning_rate=0.005, epochs=100000, C=3, D=4):
     """
     Training to adjust the weights and bias of the linear classifier.
 
@@ -187,10 +187,10 @@ ax3.hist(iris.data[50:100][:,3], density=True, histtype='bar', fill=True, color=
 ax3.hist(iris.data[100:150][:,3], density=True, histtype='bar', fill=True, color='green', alpha=0.5, label="Virginica")
 ax3.set_title("Petal width [cm]")
 
-fig.suptitle("Features across different classes")
+fig.suptitle("Distribution of features across classes")
 plt.legend()
 plt.tight_layout()
-plt.show()
+plt.savefig("features_histogram.png")
 
 
 
@@ -226,13 +226,15 @@ print("Confusion matrix for test set: (True \\ Predicted)")
 print(confusion_test)
 print()
 
+df_cm = DataFrame(confusion_test, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
+pretty_plot_confusion_matrix("confusion_matrix_three_features.png", df_cm,title='Confusion matrix with three features',cmap="YlOrBr",pred_val_axis='x')
+
+
 
 
 ############## Task 2 b ##############
-
 # Remove sepal length from features
 training_features, test_features = np.delete(training_features, 0, 1), np.delete(test_features, 0, 1)
-
 # Perform training
 W, w_o = train(training_features, labels_training, D=2)
 
@@ -245,6 +247,8 @@ print("Confusion matrix for test set: (True \\ Predicted)")
 print(confusion_test)
 print()
 
+df_cm = DataFrame(confusion_test, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
+pretty_plot_confusion_matrix("confusion_matrix_two_features.png", df_cm,title='Confusion matrix with two',cmap="YlOrBr",pred_val_axis='x')
 
 
 # Remove petal length from features
@@ -261,3 +265,6 @@ print("Error rate test set:\t", error_test, "%")
 print("Confusion matrix for test set: (True \\ Predicted)")
 print(confusion_test)
 print()
+
+df_cm = DataFrame(confusion_test, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
+pretty_plot_confusion_matrix("confusion_matrix_one_features.png", df_cm,title='Confusion matrix with one feature',cmap="YlOrBr",pred_val_axis='x')

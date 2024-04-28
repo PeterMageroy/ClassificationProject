@@ -163,4 +163,4 @@ for i in range(20):
 
 # Print the confusion matrix
 df_cm = DataFrame(confusion_matrix, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
-pretty_plot_confusion_matrix(df_cm,title='Confusion matrix',cmap="RdYlGn",pred_val_axis='x')
+pretty_plot_confusion_matrix("name_of_file.png", df_cm,title='Confusion matrix',cmap="RdYlGn",pred_val_axis='x')
