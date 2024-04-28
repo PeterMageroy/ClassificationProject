@@ -20,7 +20,7 @@ class KNN:
     
     def _predict(self, x):
         # Compute distances between x and all examples in the training set
-        distances = [np.sqrt(np.sum(x_train - x)**2) for x_train in self.X_train]
+        distances = np.linalg.norm(self.X_train - x, axis=1)
         # Sort by distance and return indices of the first k neighbors
         k_indices = np.argsort(distances)[:self.k]
         # Extract the labels of the k nearest neighbor training samples
@@ -32,13 +32,18 @@ class KNN:
 # Importing data   
 (train_X, train_y), (test_X, test_y) = mnist.load_data()
 # Reshaping data
-X_train = train_X.reshape(60000, 784)
-X_test = test_X.reshape(10000, 784)
+X_train = train_X#.reshape(60000, 784)
+X_test = test_X#.reshape(10000, 784)
+# Normalizing data
+X_train = X_train / 255.0
+X_test = X_test / 255.0
 y_train = train_y
 y_test = test_y
 
 training_data = 60000
 testing_data = 100 
+
+
 
 clf = KNN()
 clf.fit(X_train[:training_data,:], y_train[:training_data])

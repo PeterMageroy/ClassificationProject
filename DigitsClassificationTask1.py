@@ -138,7 +138,7 @@ print("--- %s seconds ---" % (time.time() - start_time))
 
 
 # Plotting some of the falsely classified images
-for i in range(20):
+'''for i in range(3):
     img = test_data[indexes_false_classified[i][0]].reshape(28, 28)
 
     plt.imshow(img, cmap='hot')
@@ -150,7 +150,7 @@ for i in range(20):
 
 
 # Plotting som of the correctly classified images
-for i in range(20):
+for i in range(3):
     img = test_data[indexes_correct_classified[i]].reshape(28, 28)
 
     plt.imshow(img, cmap='hot')
@@ -159,8 +159,11 @@ for i in range(20):
     #plt.show()
     plt.savefig("CorrectClassifiedImages/Correctclassification{}.png".format(i))
     plt.clf()
-
+'''
 
 # Print the confusion matrix
 df_cm = DataFrame(confusion_matrix, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
-pretty_plot_confusion_matrix("name_of_file.png", df_cm,title='Confusion matrix',cmap="RdYlGn",pred_val_axis='x')
+pretty_plot_confusion_matrix("conf_matrix_NN.png", df_cm,title='Confusion matrix for NN-classifier',cmap="RdYlGn",pred_val_axis='x')
+
+# df_cm = DataFrame(confusion_train, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
+# pretty_plot_confusion_matrix("confusion_matrix_train_20.png", df_cm,title='Confusion matrix for testing on training set',cmap="YlOrBr",pred_val_axis='x')
