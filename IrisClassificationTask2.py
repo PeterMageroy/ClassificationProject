@@ -86,7 +86,7 @@ def dataset_split(train_num, test_num, invert_order=False, C=3):
     return training_features, labels_training, test_features, labels_test
 
 
-def train(training_features, labels_training, learning_rate=0.005, epochs=100000, C=3, D=4):
+def train(training_features, labels_training, learning_rate=0.0001, epochs=1000000, C=3, D=4):
     """
     Training to adjust the weights and bias of the linear classifier.
 
@@ -249,7 +249,6 @@ print()
 
 df_cm = DataFrame(confusion_test, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
 pretty_plot_confusion_matrix("confusion_matrix_two_features.png", df_cm,title='Confusion matrix with two',cmap="YlOrBr",pred_val_axis='x')
-
 
 # Remove petal length from features
 training_features, test_features = np.delete(training_features, 1, 1), np.delete(test_features, 1, 1)
