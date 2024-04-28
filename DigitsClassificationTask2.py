@@ -231,8 +231,8 @@ def test(clustered_data, test_data, test_labels, test_num=1000, k=1):
         print("Error! Number of total classifications incorrect.")
 
 
-    error_rate = np.round(total_false / total_classifications, 2) * 100 # error rate in percentage
-    confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 2) * 100 # confusion matrix in percentage
+    error_rate = np.round(total_false / total_classifications, 4) * 100 # error rate in percentage
+    confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 4) * 100 # confusion matrix in percentage
 
     return error_rate, confusion_matrix, indexes_false_classified, indexes_correct_classified
 
@@ -265,6 +265,9 @@ print()
 print("--- %s seconds ---" % (time.time() - start_time))
 print()
 
+# Print the confusion matrix
+df_cm = DataFrame(confusion_matrix, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+pretty_plot_confusion_matrix("conf_matrix_NN_clustering.png", df_cm,title='Confusion matrix for NN-classifier with clustering',cmap="YlOrBr",pred_val_axis='x')
 
 
 ############# Task 2 c ##############
@@ -282,16 +285,18 @@ print()
 print("--- %s seconds ---" % (time.time() - start_time))
 print()
 
+df_cm = DataFrame(confusion_matrix, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+pretty_plot_confusion_matrix("conf_matrix_KNN_clustering.png", df_cm,title='Confusion matrix for KNN-classifier with clustering and k = 7',cmap="YlOrBr",pred_val_axis='x')
 
 
 """
 Finding and plotting error rates for different values of k in the k nearest neighbor classifier.
 """
-
+'''
 error_rates = []
 x = []
 
-for k in range(20):
+for k in range(9):
     x.append(k+1)
     error_rate, confusion_matrix, indexes_false_classified, indexes_correct_classified = test(clustered_data, test_data, test_labels, test_num=10000, k=k+1)
     error_rates.append(error_rate)
@@ -303,3 +308,4 @@ plt.xlabel("Number of nearest neighbors k")
 plt.ylabel("Error rate [%]")
 plt.grid()
 plt.savefig("error_rates_with_weighting_and_normalization.png")
+'''
