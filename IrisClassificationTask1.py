@@ -161,8 +161,8 @@ def test(test_features, labels_test, W, w_o):
 
 
 
-
-############## Task 1 a ##############
+"""
+############## Task 1 a-c ##############
 
 # Split data into features and labels for training and test
 training_features, labels_training, test_features, labels_test = dataset_split(30, 20)
@@ -184,9 +184,14 @@ print("Confusion matrix for training set: (True \\ Predicted)")
 print(confusion_train)
 print()
 
+df_cm = DataFrame(confusion_train, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
+pretty_plot_confusion_matrix("confusion_matrix_train_30.png", df_cm,title='Confusion matrix for testing on training set',cmap="YlOrBr",pred_val_axis='x')
+
+df_cm = DataFrame(confusion_test, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
+pretty_plot_confusion_matrix("confusion_matrix_test_30.png", df_cm,title='Confusion matrix for testing on testing set',cmap="YlOrBr",pred_val_axis='x')
 
 
-
+"""
 ############## Task 1 d ##############
 
 # Split data into features and labels for training and test
@@ -209,15 +214,12 @@ print("Confusion matrix for training set: (True \\ Predicted)")
 print(confusion_train)
 print()
 
-
 # Print the confusion matrices
-"""
 df_cm = DataFrame(confusion_train, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
-pretty_plot_confusion_matrix(df_cm,title='Training set',cmap="RdYlGn",pred_val_axis='x')
+pretty_plot_confusion_matrix("confusion_matrix_train_20.png", df_cm,title='Confusion matrix for testing on training set',cmap="YlOrBr",pred_val_axis='x')
 
 df_cm = DataFrame(confusion_test, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
-pretty_plot_confusion_matrix(df_cm,title='Test set',cmap="RdYlGn",pred_val_axis='x')
-"""
+pretty_plot_confusion_matrix("confusion_matrix_test_20.png", df_cm,title='Confusion matrix for testing on testing set',cmap="YlOrBr",pred_val_axis='x')
 
 """
 _, ax = plt.subplots()

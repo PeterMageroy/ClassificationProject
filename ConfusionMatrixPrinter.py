@@ -124,7 +124,7 @@ def insert_totals(df_cm):
     #print ('\ndf_cm:\n', df_cm, '\n\b\n')
 #
 
-def pretty_plot_confusion_matrix(df_cm, title='Confusion matrix', annot=True, cmap="Oranges", fmt='.2f', fz=14,
+def pretty_plot_confusion_matrix(filename, df_cm, title='Confusion matrix', annot=True, cmap="Oranges", fmt='.2f', fz=14,
       lw=0.5, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y'):
     """
       print conf matrix with default layout (like matlab)
@@ -173,7 +173,7 @@ def pretty_plot_confusion_matrix(df_cm, title='Confusion matrix', annot=True, cm
     facecolors = quadmesh.get_facecolors()
 
     #iter in text elements
-    array_df = np.array( df_cm.to_records(index=False).tolist() )
+    array_df = np.round(np.array( df_cm.to_records(index=False).tolist() ), 2)
     text_add = []; text_del = [];
     posi = -1 #from left to right, bottom to top.
     for t in ax.collections[0].axes.texts: #ax.texts:
@@ -200,7 +200,7 @@ def pretty_plot_confusion_matrix(df_cm, title='Confusion matrix', annot=True, cm
     ax.set_xlabel(xlbl)
     ax.set_ylabel(ylbl)
     plt.tight_layout()  #set layout slim
-    plt.show()
+    plt.savefig(filename)
 #
 
 def plot_confusion_matrix_from_data(y_test, predictions, columns=None, annot=True, cmap="Oranges",
