@@ -123,7 +123,7 @@ def test(train_data, train_labels, test_data, test_labels, test_num=1000):
     print("Total correct:\t", total_correct)
 
     error_rate = np.round(total_false / total_classifications, 2) * 100 # error rate in percentage
-    confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 2) * 100 # confusion matrix in percentage
+    confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 4) * 100 # confusion matrix in percentage
 
     return error_rate, confusion_matrix, indexes_false_classified, indexes_correct_classified
 
