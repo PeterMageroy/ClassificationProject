@@ -12,7 +12,7 @@ from collections import Counter
 
 
 # Reference to find execution time of the program
-start_time = time.time()
+# start_time = time.time()
 
 
 def fetch_data(test_size=10000, standardize=True):
@@ -232,7 +232,7 @@ def test(clustered_data, test_data, test_labels, test_num=1000, k=1):
 
 
     error_rate = np.round(total_false / total_classifications, 4) * 100 # error rate in percentage
-    confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 4) * 100 # confusion matrix in percentage
+    # confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 4) * 100 # confusion matrix in percentage
 
     return error_rate, confusion_matrix, indexes_false_classified, indexes_correct_classified
 
@@ -249,6 +249,8 @@ test_num = 1000 # chunk of test data
 # Create clusters for the training data
 clustered_data = create_clusters(train_data, train_labels, M)
 
+# Reference to find execution time of the program
+start_time = time.time()
 
 ############# Task 2 a-b ##############
 """
@@ -267,7 +269,7 @@ print()
 
 # Print the confusion matrix
 df_cm = DataFrame(confusion_matrix, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
-pretty_plot_confusion_matrix("conf_matrix_NN_clustering.png", df_cm,title='Confusion matrix for NN-classifier with clustering',cmap="YlOrBr",pred_val_axis='x')
+pretty_plot_confusion_matrix("conf_matrix_NN_clustering.png", df_cm,title='Confusion matrix for NN-classifier with clustering', fz=8, cmap='icefire', show_null_values=2 ,pred_val_axis='x')
 
 
 ############# Task 2 c ##############
@@ -286,7 +288,7 @@ print("--- %s seconds ---" % (time.time() - start_time))
 print()
 
 df_cm = DataFrame(confusion_matrix, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
-pretty_plot_confusion_matrix("conf_matrix_KNN_clustering.png", df_cm,title='Confusion matrix for KNN-classifier with clustering and k = 7',cmap="YlOrBr",pred_val_axis='x')
+pretty_plot_confusion_matrix("conf_matrix_KNN_clustering.png", df_cm,title='Confusion matrix for KNN-classifier with clustering and k = 7', fz=8, cmap='icefire', show_null_values=2, pred_val_axis='x')
 
 
 """

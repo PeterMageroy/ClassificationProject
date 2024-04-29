@@ -1,52 +1,23 @@
 import numpy as np
+from sklearn.datasets import fetch_openml
+from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
-from collections import Counter
-import struct
-from keras.datasets import mnist
+import time
+from ConfusionMatrixPrinter import _test_cm, pretty_plot_confusion_matrix
+from pandas import DataFrame
 
+cm = np.array([[84, 0, 0, 0, 0, 0, 1, 0, 0, 0], 
+               [0, 125, 0, 0, 0, 0, 1, 0, 0, 0], 
+               [1, 3, 103, 2, 1, 0, 0, 3, 3, 0], 
+               [0, 0, 0, 102, 0, 1, 0, 1, 1, 2], 
+               [0, 1, 1, 0, 101, 0, 1, 0, 1, 5], 
+               [0, 0, 0, 3, 1, 78, 0, 0, 3, 2], 
+               [2, 0, 0, 0, 0, 0, 85, 0, 0, 0], 
+               [0, 0, 2, 1, 0, 0, 0, 94, 0, 2], 
+               [2, 0, 1, 4, 0, 2, 0, 0, 79, 1], 
+               [0, 0, 0, 1, 2, 0, 0, 2, 2, 87]])
 
-
-class KNN:
-    def __init__(self, k=1):
-        self.k = k
-    
-    def fit(self, X, y):
-        self.X_train = X
-        self.y_train = y
-
-    def predict(self, X):
-        y_pred = [self._predict(x) for x in X]
-        return np.array(y_pred)
-    
-    def _predict(self, x):
-        # Compute distances between x and all examples in the training set
-        distances = np.linalg.norm(self.X_train - x, axis=1)
-        # Sort by distance and return indices of the first k neighbors
-        k_indices = np.argsort(distances)[:self.k]
-        # Extract the labels of the k nearest neighbor training samples
-        k_nearest_labels = [self.y_train[i] for i in k_indices]
-        # Return the most common class label
-        most_common = Counter(k_nearest_labels).most_common(1)
-        return most_common[0][0]
-
-# Importing data   
-(train_X, train_y), (test_X, test_y) = mnist.load_data()
-# Reshaping data
-X_train = train_X#.reshape(60000, 784)
-X_test = test_X#.reshape(10000, 784)
-# Normalizing data
-X_train = X_train / 255.0
-X_test = X_test / 255.0
-y_train = train_y
-y_test = test_y
-
-training_data = 60000
-testing_data = 100 
-
-
-
-clf = KNN()
-clf.fit(X_train[:training_data,:], y_train[:training_data])
-predictions = clf.predict(X_test[:testing_data,:])
-accuracy = np.sum(predictions == y_test[:testing_data]) / len(y_test[:testing_data])
-print(accuracy)
+df_cm = DataFrame(cm, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+pretty_plot_confusion_matrix("conf_matrix_NN_TEST.png", df_cm,title='Confusion matrix for NN-classifier',pred_val_axis='x', fz=8, cmap='icefire',show_null_values=2)

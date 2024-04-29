@@ -123,7 +123,7 @@ def test(train_data, train_labels, test_data, test_labels, test_num=1000):
     print("Total correct:\t", total_correct)
 
     error_rate = np.round(total_false / total_classifications, 2) * 100 # error rate in percentage
-    confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 4) * 100 # confusion matrix in percentage
+    # confusion_matrix = np.round(np.array(confusion_matrix) / test_num, 4) * 100 # confusion matrix in percentage
 
     return error_rate, confusion_matrix, indexes_false_classified, indexes_correct_classified
 
@@ -163,7 +163,9 @@ for i in range(3):
 
 # Print the confusion matrix
 df_cm = DataFrame(confusion_matrix, index=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
-pretty_plot_confusion_matrix("conf_matrix_NN.png", df_cm,title='Confusion matrix for NN-classifier',cmap="RdYlGn",pred_val_axis='x')
+pretty_plot_confusion_matrix("conf_matrix_NN.png", df_cm,title='Confusion matrix for NN-classifier',pred_val_axis='x', fz=8)
+
+#plot_from_confusion_matrix(confusion_matrix, columns=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], cmap="YlOrBr", pred_val_axis='x', fz=8, lw=0.5, cbar=False, figsize=[10,10])
 
 # df_cm = DataFrame(confusion_train, index=["setosa","versicolour","virginica"], columns=["setosa","versicolour","virginica"])
 # pretty_plot_confusion_matrix("confusion_matrix_train_20.png", df_cm,title='Confusion matrix for testing on training set',cmap="YlOrBr",pred_val_axis='x')

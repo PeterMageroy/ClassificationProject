@@ -118,9 +118,9 @@ def insert_totals(df_cm):
     sum_lin = []
     for item_line in df_cm.iterrows():
         sum_lin.append( item_line[1].sum() )
-    df_cm['sum_lin'] = sum_lin
+    df_cm['sum'] = sum_lin
     sum_col.append(np.sum(sum_lin))
-    df_cm.loc['sum_col'] = sum_col
+    df_cm.loc['sum'] = sum_col
     #print ('\ndf_cm:\n', df_cm, '\n\b\n')
 #
 
